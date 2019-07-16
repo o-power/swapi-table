@@ -55,9 +55,10 @@ function writeToDocument(url) {
         //el.innerHTML = data;
         
         var pagination;
+        // The Boolean value of null is false:
         if (data.next || data.previous) {
             pagination = generatePaginationButtons(data.next,data.previous);
-            console.log(pagination);
+            //console.log(pagination);
         }
         
         // [object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object]
@@ -80,18 +81,20 @@ function writeToDocument(url) {
         
         data = data.results;
         var tableHeaders = getTableHeaders(data[0]);
-
+        
+        //console.log(data);
         data.forEach(function(item) {
             var dataRow = [];
 
             Object.keys(item).forEach(function(key) {
-                var rowData = item[key].toString();
+                //console.log(item[key]);
+                var rowData = (item[key] || "").toString();
                 var truncatedData = rowData.substring(0, 15);
                 dataRow.push(`<td>${truncatedData}</td>`);
             });
             tableRows.push(`<tr>${dataRow}</tr>`)
         });
 
-        el.innerHTML = `<table>${tableHeaders}${tableRows}</table>${pagination}`;
+        el.innerHTML = `<table>${tableHeaders}${tableRows}</table>${pagination}`.replace(/,/g,"");
     });
 }
